@@ -2,10 +2,8 @@ package wordcount.impl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import wordcount.WordcountApplication;
 import wordcount.interfaces.WordFrequency;
 
@@ -15,7 +13,6 @@ import java.util.TreeMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = WordcountApplication.class)
 class WordFrequencyAnalyzerImplTest {
     @Autowired
