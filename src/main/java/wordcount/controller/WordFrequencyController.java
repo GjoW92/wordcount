@@ -1,29 +1,32 @@
 package wordcount.controller;
 
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import wordcount.impl.WordFrequencyAnalyzerImpl;
 import wordcount.impl.WordFrequencyImpl;
 import wordcount.interfaces.WordFrequency;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/api")
-public class WordFrequencyAnalyzerController {
+public class WordFrequencyController {
 
     private final WordFrequencyAnalyzerImpl wordFrequencyAnalyzer;
 
     private int frequency;
 
-    public WordFrequencyAnalyzerController(WordFrequencyAnalyzerImpl wordFrequencyAnalyzer) {
+    public WordFrequencyController(WordFrequencyAnalyzerImpl wordFrequencyAnalyzer) {
         this.wordFrequencyAnalyzer = wordFrequencyAnalyzer;
     }
 
     @GetMapping("/frequency")
     @ResponseBody
     public WordFrequency calculateHighestFrequency(@RequestParam String text) {
-        if(text.equals("") || text.length() < 2) {
-            System.out.println("Invalid text to calculate with");
+        Pattern p = Pattern.compile("^\\D+\\s.+");
+        if(text == null || !p.matcher(text).find()) {
+            System.out.println("INVALID TEXT");
             return null;
         }
 
@@ -47,7 +50,7 @@ public class WordFrequencyAnalyzerController {
     public WordFrequency calculateFrequencyForWord(@RequestParam String text, @RequestParam String word) {
         frequency = wordFrequencyAnalyzer.calculateFrequencyForWord(text, word);
 
-        return new WordFrequencyImpl(word, frequency);
+        return new WordFrequencyImpl(word.toLowerCase(), frequency);
     }
 
     @GetMapping("/frequencies/{n}")

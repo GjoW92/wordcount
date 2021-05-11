@@ -2,14 +2,15 @@ package wordcount.impl;
 
 import wordcount.interfaces.WordFrequency;
 
-import java.util.List;
-
 public class WordFrequencyImpl implements WordFrequency {
 
     private String word;
 
     private int frequency;
 
+    public WordFrequencyImpl() {
+
+    }
     public WordFrequencyImpl(String word, int frequency) {
         this.word = word;
         this.frequency = frequency;
