@@ -1,0 +1,8 @@
+wordcount\impl\WordFrequencyAnalyzerImpl.class
+wordcount\WordcountApplication.class
+wordcount\configuration\CorsConfig.class
+wordcount\interfaces\WordFrequency.class
+wordcount\interfaces\WordFrequencyAnalyzer.class
+wordcount\controller\WordFrequencyController.class
+wordcount\impl\WordFrequencyImpl.class
+wordcount\controller\FormController.class

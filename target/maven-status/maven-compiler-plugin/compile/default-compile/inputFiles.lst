@@ -1,0 +1,8 @@
+D:\dev\Projects\ordina\wordcount\src\main\java\wordcount\controller\WordFrequencyController.java
+D:\dev\Projects\ordina\wordcount\src\main\java\wordcount\controller\FormController.java
+D:\dev\Projects\ordina\wordcount\src\main\java\wordcount\interfaces\WordFrequency.java
+D:\dev\Projects\ordina\wordcount\src\main\java\wordcount\configuration\CorsConfig.java
+D:\dev\Projects\ordina\wordcount\src\main\java\wordcount\impl\WordFrequencyImpl.java
+D:\dev\Projects\ordina\wordcount\src\main\java\wordcount\impl\WordFrequencyAnalyzerImpl.java
+D:\dev\Projects\ordina\wordcount\src\main\java\wordcount\interfaces\WordFrequencyAnalyzer.java
+D:\dev\Projects\ordina\wordcount\src\main\java\wordcount\WordcountApplication.java

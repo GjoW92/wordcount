@@ -1,0 +1,213 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+    <title>Calculate frequency</title>
+    <style>
+      html, body {
+      display: flex;
+      justify-content: center;
+      font-family: Roboto, Arial, sans-serif;
+      font-size: 15px;
+      }
+      .modal {
+          display: none;
+          position: fixed;
+          z-index: 1;
+          padding-top: 100px;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          overflow: auto;
+          background-color: rgb(0,0,0);
+          background-color: rgba(0,0,0,0.4);
+      }
+      .modal-content {
+          background-color: #fefefe;
+          margin: auto;
+          padding: 20px;
+          border: 1px solid #888;
+          width: 80%;
+      }
+      .form {
+      border: 5px solid #f1f1f1;
+      }
+      input[type=text], input[type=number] {
+      width: 100%;
+      padding: 16px 8px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      }
+      button {
+      background-color: #FFA500;
+      color: white;
+      padding: 14px 0;
+      margin: 10px 0;
+      border: none;
+      cursor: grabbing;
+      width: 100%;
+      }
+      h1 {
+      text-align:center;
+      font-size:18;
+      }
+      button:hover {
+      opacity: 0.8;
+      }
+      .formcontainer {
+      text-align: left;
+      margin: 24px 50px 12px;
+      }
+      .container {
+      padding: 16px 0;
+      text-align:left;
+      }
+      span.psw {
+      float: right;
+      padding-top: 0;
+      padding-right: 15px;
+      }
+      /* Change styles for span on extra small screens */
+      @media screen and (max-width: 300px) {
+      span.psw {
+      display: block;
+      float: none;
+      }
+    }
+    </style>
+</head>
+<body>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <h3>Click anywhere outside of the box to close</h3>
+        </div>
+    </div>
+    
+    <div class="form" >
+      <h1>Calculate the frequency of words</h1>
+      <div class="formcontainer">
+
+      <hr/>
+      <div class="container">
+        <label><strong><center>Get the highest frequent word</center></strong></label><br />
+        <label><strong>Sentence</strong></label>
+        <input id="highFreqInput" type="text" placeholder="Enter Sentence">
+        <button onclick="highestFrequency()">Count</button>
+      </div>
+
+      <hr />      
+      <div class="container">
+        <label><strong><center>Get the frequency of a word</center></strong></label><br />
+        <label><strong>Sentence</strong></label>
+        <input id="sentenceForWord" type="text" placeholder="Enter Sentence">
+        <label><strong>Word</strong></label>
+        <input id="wordForSentence" type="text" placeholder="Enter Word">
+        <button onclick="frequencyForWord()">Count</button>
+      </div>
+
+      <hr/>
+      <div class="container">
+        <label><strong><center>Get the n most frequent words</center></strong></label><br />
+        <label><strong>Sentence</strong></label>
+        <input id="sentenceForN" type="text" placeholder="Enter Sentence">
+        <label><strong>N Amount</strong></label>
+        <input id="amountN" type="number" placeholder="Enter n amount" >
+        <button onclick="frequencyNWords()">Count</button>
+      </div>
+      </div>
+    </div>
+
+<script type="text/javascript">
+
+    const modal = document.getElementById("myModal");
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    function highestFrequency() {
+    let sentence = document.getElementById("highFreqInput").value
+    modal.style.display = "block";
+    if(sentence === "") {
+        sentence = " ";
+    }
+    fetch('http://localhost:8080/api/frequency/?text=' + sentence)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+            return response.json()
+        })
+        .then(result => {
+            let content = "";
+                content += `
+                        <h2> Click anywhere outside the box to close </h2> <hr />
+                        <h3> ${sentence} </h3>
+                        <p> Word: '${result.word}' - Frequency: '${result.frequency}</p>
+                        `
+            modal.lastElementChild.innerHTML = content   
+            })
+}
+
+function frequencyForWord() {
+    let sentence = document.getElementById("sentenceForWord").value;
+    let word = document.getElementById("wordForSentence").value;
+    modal.style.display = "block";
+    if(sentence === "") {
+        sentence = " ";
+    }
+    if(word === "") {
+        word = " ";
+    }
+    fetch('http://localhost:8080/api/word/?text=' + sentence + '&word=' + word)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+            return response.json()
+        })
+        .then(result => {
+            let content = "";
+            content += `
+                        <h2> Click anywhere outside the box to close </h2> <hr />
+                        <h3> ${sentence} </h3>
+                        <p> Word: '${result.word}' - Frequency: '${result.frequency}'</p>
+        
+                        `
+            modal.lastElementChild.innerHTML = content
+        })
+}
+
+function frequencyNWords() {
+    let sentence = document.getElementById("sentenceForN").value;
+    let n = document.getElementById("amountN").value;
+    modal.style.display = "block";
+    if(sentence === "") {
+        sentence = " ";
+    }
+
+    fetch('http://localhost:8080/api/frequencies/' + n + '?text=' + sentence)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+            return response.json()
+        })
+        .then(result => {
+            let content = `<h2> Click anywhere outside the box to close </h2><hr/><h3>${sentence} </h3>`;
+            for (const x of result) {
+                 content += `
+                        <p> Word: '${x.word}' - Frequency: '${x.frequency}'</p>
+                        `
+            }
+            console += "</div>"
+            modal.lastElementChild.innerHTML = content
+        })
+}
+</script>
+</body>
+</html>
